@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Кликер</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -16,6 +16,8 @@
             align-items: center;
             justify-content: center;
             color: white;
+            margin: 0; /* Добавлено для корректного отображения */
+            overflow: hidden; /* Предотвращает прокрутку */
         }
         h1 {
             font-size: 3em;
@@ -36,13 +38,14 @@
         .coin {
             width: 150px;
             height: 150px;
-            background-image: url('https://raw.githubusercontent.com/loveisvlad12/Click-game/main/coin.png'); background-size: contain; background-repeat: no-repeat; background-position: center;
-            background-size: cover;
+            background-image: url('https://raw.githubusercontent.com/loveisvlad12/Click-game/main/coin.png');
+            background-size: contain;
+            background-repeat: no-repeat;
             background-position: center;
             border: none;
             cursor: pointer;
             transition: transform 0.1s ease-in-out;
-            touch-action: manipulation;
+            touch-action: manipulation; /* Уже есть, помогает управлять сенсорными событиями */
         }
         .coin:active {
             transform: scale(0.9);
