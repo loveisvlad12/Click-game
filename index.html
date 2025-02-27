@@ -231,7 +231,6 @@
             document.getElementById("leaderboard-tab").classList.remove("active");
             document.getElementById(tabName + "-tab").classList.add("active");
 
-            // Удаляем класс active у всех кнопок и добавляем только к активной вкладке
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.classList.remove('active');
             });
