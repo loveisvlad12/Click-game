@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кликер</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        #counter { font-size: 2em; margin: 20px; }
+        button { font-size: 1.5em; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Кликер</h1>
+    <p>Тапай и зарабатывай монеты!</p>
+    <div id="counter">0</div>
+    <button onclick="tap()">Тап!</button>
+    <script>
+        let count = 0;
+        function tap() {
+            count++;
+            document.getElementById("counter").innerText = count;
+        }
+        
+        Telegram.WebApp.onEvent("mainButtonClicked", () => {
+            Telegram.WebApp.sendData(JSON.stringify({score: count}));
+            Telegram.WebApp.close();
+        });
+        
+        Telegram.WebApp.MainButton.setText("Отправить результат");
+        Telegram.WebApp.MainButton.show();
+    </script>
+</body>
+</html>
