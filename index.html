@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Кликер</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://telegram.org/js/telegrampassport.js"></script>
     <style>
         body {
             text-align: center;
@@ -26,6 +26,10 @@
         p {
             font-size: 1.2em;
         }
+        #timer {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
         #counter {
             font-size: 4em;
             font-weight: bold;
@@ -42,37 +46,113 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            background-color: transparent; /* Убираем любой фоновый цвет */
-            border: none; /* Убираем стандартную обводку кнопки */
-            outline: none; /* Убираем обводку при фокусе */
+            background-color: transparent;
+            border: none;
+            outline: none;
             cursor: pointer;
             transition: transform 0.1s ease-in-out;
             touch-action: manipulation;
         }
+        .coin:disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
         .coin:active {
             transform: scale(0.9);
+        }
+        #progressBar {
+            width: 200px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px auto;
+        }
+        #progress {
+            height: 100%;
+            background-color: #ff9a9e;
+            border-radius: 10px;
+            transition: width 0.1s ease-in-out;
         }
     </style>
 </head>
 <body>
     <h1>Кликер</h1>
-    <p>Тапай и зарабатывай монеты!</p>
+    <p>Тапай и зарабатывай монеты в течение 30 секунд</p>
+    <div id="timer">Time left: 30 seconds</div>
+    <div id="progressBar">
+        <div id="progress" style="width: 100%"></div>
+    </div>
     <div id="counter">0</div>
-    <button class="coin" onclick="tap()"></button>
+    <button class="coin" id="coinButton" onclick="tap(event)"></button>
     <script>
         let count = 0;
-        function tap() {
+        let timeLeft = 30;
+        let timer = null;
+
+        function startTimer() {
+            timer = window.setInterval(() => {
+                timeLeft--;
+                document.getElementById("timer").innerText = `Time left: ${timeLeft} seconds`;
+                let progress = document.getElementById("progress");
+                progress.style.width = (timeLeft / 30 * 100) + "%";
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            window.clearInterval(timer);
+            document.getElementById("coinButton").disabled = true;
+            Telegram.WebApp.ready();
+            Telegram.WebApp.showMainButton();
+        }
+
+        function tap(event) {
             count++;
             document.getElementById("counter").innerText = count;
+
+            // Visual feedback
+            let feedback = document.createElement("div");
+            feedback.innerHTML = "+1";
+            feedback.style.position = "absolute";
+            feedback.style.left = (event.clientX - 10) + "px";
+            feedback.style.top = (event.clientY - 20) + "px";
+            feedback.style.color = "yellow";
+            feedback.style.fontSize = "20px";
+            document.body.appendChild(feedback);
+
+            // Animate the feedback to fade out
+            setTimeout(() => {
+                feedback.style.opacity = "0";
+            }, 500);
+            setTimeout(() => {
+                feedback.remove();
+            }, 1000);
+
+            // Sound feedback
+            let clickSound = new Audio("click.mp3");
+            clickSound.play();
+
+            // Vibration feedback
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
         }
-        
+
+        window.onload = function() {
+            startTimer();
+        };
+
         Telegram.WebApp.onEvent("mainButtonClicked", () => {
             Telegram.WebApp.sendData(JSON.stringify({score: count}));
+            count = 0;
+            document.getElementById("counter").innerText = count;
             Telegram.WebApp.close();
         });
-        
-        Telegram.WebApp.MainButton.setText("Отправить результат");
-        Telegram.WebApp.MainButton.show();
+
+        Telegram.WebApp.ready();
     </script>
 </body>
 </html>
