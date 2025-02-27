@@ -16,8 +16,8 @@
             align-items: center;
             justify-content: center;
             color: white;
-            margin: 0; /* Добавлено для корректного отображения */
-            overflow: hidden; /* Предотвращает прокрутку */
+            margin: 0;
+            overflow: hidden;
         }
         h1 {
             font-size: 3em;
@@ -42,10 +42,12 @@
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            border: none;
+            background-color: transparent; /* Убираем любой фоновый цвет */
+            border: none; /* Убираем стандартную обводку кнопки */
+            outline: none; /* Убираем обводку при фокусе */
             cursor: pointer;
             transition: transform 0.1s ease-in-out;
-            touch-action: manipulation; /* Уже есть, помогает управлять сенсорными событиями */
+            touch-action: manipulation;
         }
         .coin:active {
             transform: scale(0.9);
