@@ -1,274 +1,265 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Кликер</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    body {
-      text-align: center;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      margin: 0;
-      overflow: hidden;
-    }
-    h1 {
-      font-size: 3em;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-      margin-bottom: 20px;
-    }
-    #tabs {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .tab-button {
-      padding: 10px 20px;
-      border: none;
-      background-color: #eee;
-      cursor: pointer;
-      border-radius: 5px 5px 0 0;
-      margin-right: 10px;
-      color: #333;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    .tab-button.active {
-      background-color: #fff;
-      border-bottom: 1px solid #fff;
-      color: #000;
-    }
-    .tab-content {
-      display: none;
-      width: 100%;
-      max-width: 400px;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-    .tab-content.active {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    #game-tab p,
-    #shop-tab p {
-      margin-bottom: 10px;
-      font-size: 1.2em;
-    }
-    #counter-container {
-      position: relative;
-      width: 200px;
-      margin-bottom: 20px;
-    }
-    #counter {
-      font-size: 4em;
-      font-weight: bold;
-      padding: 10px 20px;
-      background: #000;
-      color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 10px 0px #999;
-      text-align: center;
-    }
-    #increment {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      transition: opacity 0.5s;
-      color: yellow;
-      font-size: 0.5em;
-    }
-    .coin {
-      width: 250px;
-      height: 250px;
-      background-image: url('https://raw.githubusercontent.com/loveisvlad12/Click-game/main/coin.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-color: transparent;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      transition: transform 0.1s ease-in-out;
-    }
-    .coin:active {
-      transform: scale(0.9);
-    }
-    .new-coin {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background-image: url('https://raw.githubusercontent.com/loveisvlad12/Click-game/main/coin.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      pointer-events: none;
-      opacity: 1;
-      z-index: 1000;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Кликер</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin: 0;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        #tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tab-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #eee;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            margin-right: 10px;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .tab-button.active {
+            background-color: #fff;
+            border-bottom: 1px solid #fff;
+            color: #000;
+        }
+        .tab-content {
+            display: none;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #game-tab p, #shop-tab p {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        #counter-container {
+            position: relative;
+            width: 200px;
+            margin-bottom: 20px;
+        }
+        #counter {
+            font-size: 4em;
+            font-weight: bold;
+            padding: 10px 20px;
+            background: #000;
+            color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px 0px #999;
+            text-align: center;
+        }
+        #increment {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            color: yellow;
+            font-size: 0.5em;
+        }
+        .coin {
+            width: 250px;
+            height: 250px;
+            background-image: url('https://raw.githubusercontent.com/loveisvlad12/Click-game/main/coin.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: transform 0.1s ease-in-out;
+            touch-action: manipulation;
+            margin-bottom: 20px;
+        }
+        .coin:active {
+            transform: scale(0.9);
+        }
+        .new-coin {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-image: url('https://raw.githubusercontent.com/loveisvlad12/Click-game/main/coin.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #leaderboard {
+            max-height: 200px;
+            overflow-y: auto;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 10px;
+        }
+        #message {
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
-  <h1>Кликер</h1>
-  <div id="tabs">
-    <button class="tab-button active" onclick="openTab('game')">Игра</button>
-    <button class="tab-button" onclick="openTab('shop')">Магазин</button>
-    <button class="tab-button" onclick="openTab('leaderboard')">Лидерборд</button>
-  </div>
-  <div id="game-tab" class="tab-content active">
-    <p>Текущий баланс: <span id="balance">0</span> монет</p>
-    <p>Множитель: <span id="multiplier">1</span></p>
-    <div id="counter-container">
-      <div id="counter">0</div>
-      <span id="increment"></span>
+    <h1>Кликер</h1>
+    <div id="tabs">
+        <button class="tab-button active" onclick="openTab('game')">Игра</button>
+        <button class="tab-button" onclick="openTab('shop')">Магазин</button>
+        <button class="tab-button" onclick="openTab('leaderboard')">Лидерборд</button>
     </div>
-    <button class="coin" onclick="tap(event)"></button>
-  </div>
-  <div id="shop-tab" class="tab-content">
-    <p>Текущий баланс: <span id="shop_balance">0</span> монет</p>
-    <p>Текущий множитель: <span id="shop_multiplier">1</span></p>
-    <p>Стоимость следующего улучшения: <span id="upgrade_cost">10</span> монет</p>
-    <button id="buy_upgrade_button">Купить</button>
-  </div>
-  <div id="leaderboard-tab" class="tab-content">
-    <h2>Лидерборд</h2>
-    <div id="leaderboard"></div>
-    <button id="refresh_leaderboard_button">Обновить</button>
-  </div>
-  <p id="message"></p>
-  <audio id="coinSound" src="https://cdn.pixabay.com/download/audio/2015/03/20/audio_28165a4e88.mp3"></audio>
-  <script>
-    let count = 0;
-    let url = new URL(window.location.href);
-    let balance = parseInt(url.searchParams.get("balance")) || 0;
-    let multiplier = parseInt(url.searchParams.get("multiplier")) || 1;
-    let upgrades = parseInt(url.searchParams.get("upgrades")) || 0;
+    <div id="game-tab" class="tab-content active">
+        <p>Текущий баланс: <span id="balance">0</span> монет</p>
+        <p>Множитель: <span id="multiplier">1</span></p>
+        <div id="counter-container">
+            <div id="counter">0</div>
+            <span id="increment"></span>
+        </div>
+        <button class="coin" onclick="tap(event)"></button>
+        <button id="send_result_button">Отправить</button>
+    </div>
+    <div id="shop-tab" class="tab-content">
+        <p>Текущий баланс: <span id="shop_balance">0</span> монет</p>
+        <p>Текущий множитель: <span id="shop_multiplier">1</span></p>
+        <p>Стоимость следующего улучшения: <span id="upgrade_cost">10</span> монет</p>
+        <button id="buy_upgrade_button">Купить</button>
+    </div>
+    <div id="leaderboard-tab" class="tab-content">
+        <h2>Лидерборд</h2>
+        <div id="leaderboard"></div>
+        <button id="refresh_leaderboard_button">Обновить</button>
+    </div>
+    <p id="message"></p>
+    <audio id="coinSound" src="https://cdn.pixabay.com/download/audio/2015/03/20/audio_28165a4e88.mp3"></audio>
+    <script>
+        let count = 0;
+        let url = new URL(window.location.href);
+        let balance = parseInt(url.searchParams.get("balance")) || 0;
+        let multiplier = parseInt(url.searchParams.get("multiplier")) || 1;
+        let upgrades = parseInt(url.searchParams.get("upgrades")) || 0;
 
-    document.getElementById("balance").innerText = balance;
-    document.getElementById("shop_balance").innerText = balance;
-    document.getElementById("multiplier").innerText = multiplier;
-    document.getElementById("shop_multiplier").innerText = multiplier;
-    document.getElementById("counter").innerText = 0;
-    let next_upgrade_cost = 10 * (2 ** upgrades);
-    document.getElementById("upgrade_cost").innerText = next_upgrade_cost;
-
-    function tap(event) {
-      count += multiplier;
-      document.getElementById("counter").innerText = count;
-      document.getElementById("increment").innerText = "+" + multiplier;
-      document.getElementById("increment").style.opacity = 1;
-
-      setTimeout(() => {
-        document.getElementById("increment").style.opacity = 0;
-      }, 1000);
-
-      document.getElementById("coinSound").play();
-
-      if (navigator.vibrate) {
-        navigator.vibrate(50);
-      }
-      // Обновляем баланс и отправляем изменение на сервер при каждом клике
-      balance += multiplier;
-      document.getElementById("balance").innerText = balance;
-      document.getElementById("shop_balance").innerText = balance;
-      Telegram.WebApp.sendData(JSON.stringify({ "type": "increment", "delta": multiplier }));
-
-      let newCoin = document.createElement("div");
-      newCoin.classList.add("new-coin");
-      newCoin.style.left = event.clientX + "px";
-      newCoin.style.top = event.clientY + "px";
-
-      document.body.appendChild(newCoin);
-
-      let counterRect = document.getElementById("counter").getBoundingClientRect();
-      let counterLeft = counterRect.left + (counterRect.width / 2);
-      let counterTop = counterRect.top + (counterRect.height / 2);
-
-      newCoin.animate(
-        {
-          left: [event.clientX, counterLeft],
-          top: [event.clientY, counterTop],
-          opacity: [1, 0],
-          transform: ["rotate(0deg)", "rotate(720deg)"]
-        },
-        {
-          duration: 1000,
-          easing: "ease-in-out"
-        }
-      ).onfinish = function() {
-        newCoin.remove();
-      };
-    }
-
-    function openTab(tabName) {
-      document.getElementById("game-tab").classList.remove("active");
-      document.getElementById("shop-tab").classList.remove("active");
-      document.getElementById("leaderboard-tab").classList.remove("active");
-      document.getElementById(tabName + "-tab").classList.add("active");
-
-      document.querySelectorAll('.tab-button').forEach(button => {
-        button.classList.remove('active');
-      });
-      document.querySelector(`.tab-button[onclick="openTab('${tabName}')"]`).classList.add('active');
-
-      if (tabName === "leaderboard") {
-        let data = { "type": "get_leaderboard" };
-        console.log("Sending leaderboard request:", JSON.stringify(data)); // Debug
-        Telegram.WebApp.sendData(JSON.stringify(data));
-      }
-    }
-
-    document.getElementById("buy_upgrade_button").addEventListener("click", function() {
-      if (balance >= next_upgrade_cost) {
-        let data = { "type": "buy_upgrade" };
-        console.log("Sending buy upgrade:", JSON.stringify(data)); // Debug
-        Telegram.WebApp.sendData(JSON.stringify(data));
-        document.getElementById("message").innerText = "Улучшение куплено!";
-      } else {
-        alert("Недостаточно баланса для покупки улучшения.");
-      }
-    });
-
-    document.getElementById("refresh_leaderboard_button").addEventListener("click", function() {
-      let data = { "type": "get_leaderboard" };
-      console.log("Sending leaderboard refresh:", JSON.stringify(data)); // Debug
-      Telegram.WebApp.sendData(JSON.stringify(data));
-    });
-
-    Telegram.WebApp.onEvent("message", function(eventData) {
-      console.log("Received message from bot:", eventData); // Debug
-      let data = JSON.parse(eventData);
-      if (data.type === "leaderboard_data") {
-        document.getElementById("leaderboard").innerHTML = data.data.join("<br>");
-      } else if (data.type === "update_data") {
-        // Обновляем показатели игрока по данным от бота
-        if (data.balance !== undefined) {
-          balance = parseInt(data.balance);
-          document.getElementById("balance").innerText = balance;
-          document.getElementById("shop_balance").innerText = balance;
-        }
-        if (data.multiplier !== undefined) {
-          multiplier = parseInt(data.multiplier);
-          document.getElementById("multiplier").innerText = multiplier;
-          document.getElementById("shop_multiplier").innerText = multiplier;
-        }
-        if (data.upgrades !== undefined) {
-          upgrades = parseInt(data.upgrades);
-        }
-        next_upgrade_cost = 10 * (2 ** upgrades);
+        document.getElementById("balance").innerText = balance;
+        document.getElementById("shop_balance").innerText = balance;
+        document.getElementById("multiplier").innerText = multiplier;
+        document.getElementById("shop_multiplier").innerText = multiplier;
+        document.getElementById("counter").innerText = 0;
+        let next_upgrade_cost = 10 * (2 ** upgrades);
         document.getElementById("upgrade_cost").innerText = next_upgrade_cost;
-      }
-    });
 
-    Telegram.WebApp.ready();
-  </script>
-</body>
-</html>
+        function tap(event) {
+            count += multiplier;
+            document.getElementById("counter").innerText = count;
+            document.getElementById("increment").innerText = "+" + multiplier;
+            document.getElementById("increment").style.opacity = 1;
+
+            setTimeout(() => {
+                document.getElementById("increment").style.opacity = 0;
+            }, 1000);
+
+            document.getElementById("coinSound").play();
+
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+
+            let newCoin = document.createElement("div");
+            newCoin.classList.add("new-coin");
+            newCoin.style.left = event.clientX + "px";
+            newCoin.style.top = event.clientY + "px";
+
+            document.body.appendChild(newCoin);
+
+            let counterRect = document.getElementById("counter").getBoundingClientRect();
+            let counterLeft = counterRect.left + (counterRect.width / 2);
+            let counterTop = counterRect.top + (counterRect.height / 2);
+
+            newCoin.animate({
+                left: [event.clientX, counterLeft],
+                top: [event.clientY, counterTop],
+                opacity: [1, 0],
+                transform: ["rotate(0deg)", "rotate(720deg)"]
+            }, {
+                duration: 1000,
+                easing: "ease-in-out"
+            }).onfinish = function() {
+                newCoin.remove();
+            };
+        }
+
+        function openTab(tabName) {
+            document.getElementById("game-tab").classList.remove("active");
+            document.getElementById("shop-tab").classList.remove("active");
+            document.getElementById("leaderboard-tab").classList.remove("active");
+            document.getElementById(tabName + "-tab").classList.add("active");
+
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector(`.tab-button[onclick="openTab('${tabName}')"]`).classList.add('active');
+
+            if (tabName === "leaderboard") {
+                let data = {"type": "get_leaderboard"};
+                console.log("Sending leaderboard request:", JSON.stringify(data));
+                Telegram.WebApp.sendData( JSON.stringify(data) );
+            }
+        }
+
+        document.getElementById("buy_upgrade_button").addEventListener("click", function() {
+            if (balance >= next_upgrade_cost) {
+                let data = {"type": "buy_upgrade"};
+                console.log("Sending buy upgrade:", JSON.stringify(data));
+                Telegram.WebApp.sendData( JSON.stringify(data) );
+                document.getElementById("message").innerText = "Upgrade purchased successfully! Please close the app.";
+            } else {
+                alert("Not enough coins to buy the next upgrade.");
+            }
+        });
+
+        document.getElementById("refresh_leaderboard_button").addEventListener("click", function() {
+            let data = {"type": "get_leaderboard"};
+            console.log("Sending leaderboard request:", JSON.stringify(data));
+            Telegram.WebApp.sendData( JSON.stringify(data) );
+        });
+
+        window.Telegram.WebApp.onEvent("close", function() {
+            if (count > 0) {
+                let data = {"type": "game_result
