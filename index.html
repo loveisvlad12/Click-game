@@ -143,7 +143,7 @@
 <body>
     <h1>Кликер</h1>
     <div id="tabs">
-        <button class="tab-button" onclick="openTab('game')">Игра</button>
+        <button class="tab-button active" onclick="openTab('game')">Игра</button>
         <button class="tab-button" onclick="openTab('shop')">Магазин</button>
         <button class="tab-button" onclick="openTab('leaderboard')">Лидерборд</button>
     </div>
@@ -230,6 +230,13 @@
             document.getElementById("shop-tab").classList.remove("active");
             document.getElementById("leaderboard-tab").classList.remove("active");
             document.getElementById(tabName + "-tab").classList.add("active");
+
+            // Удаляем класс active у всех кнопок и добавляем только к активной вкладке
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector(`.tab-button[onclick="openTab('${tabName}')"]`).classList.add('active');
+
             if (tabName === "leaderboard") {
                 let data = {"type": "get_leaderboard"};
                 Telegram.WebApp.sendData(JSON.stringify(data));
@@ -259,7 +266,7 @@
 
         Telegram.WebApp.onEvent("message", function(eventData) {
             let data = JSON.parse(eventData);
-            if (data.type == "leaderboard_data") {
+            if (data.type === "leaderboard_data") {
                 let leaderboardDiv = document.getElementById("leaderboard");
                 leaderboardDiv.innerHTML = data.data.join("<br>");
             }
