@@ -238,6 +238,7 @@
 
             if (tabName === "leaderboard") {
                 let data = {"type": "get_leaderboard"};
+                console.log("Sending leaderboard request:", JSON.stringify(data)); // Debug
                 Telegram.WebApp.sendData(JSON.stringify(data));
             }
         }
@@ -245,6 +246,7 @@
         document.getElementById("buy_upgrade_button").addEventListener("click", function() {
             if (balance >= next_upgrade_cost) {
                 let data = {"type": "buy_upgrade"};
+                console.log("Sending buy upgrade:", JSON.stringify(data)); // Debug
                 Telegram.WebApp.sendData(JSON.stringify(data));
                 document.getElementById("message").innerText = "Улучшение куплено, пожалуйста, закройте приложение.";
             } else {
@@ -254,16 +256,19 @@
 
         document.getElementById("send_result_button").addEventListener("click", function() {
             let data = {"type": "game_result", "score": count};
+            console.log("Sending game result:", JSON.stringify(data)); // Debug
             Telegram.WebApp.sendData(JSON.stringify(data));
             document.getElementById("message").innerText = "Результат отправлен, вы можете закрыть приложение.";
         });
 
         document.getElementById("refresh_leaderboard_button").addEventListener("click", function() {
             let data = {"type": "get_leaderboard"};
+            console.log("Sending leaderboard refresh:", JSON.stringify(data)); // Debug
             Telegram.WebApp.sendData(JSON.stringify(data));
         });
 
         Telegram.WebApp.onEvent("message", function(eventData) {
+            console.log("Received message from bot:", eventData); // Debug
             let data = JSON.parse(eventData);
             if (data.type === "leaderboard_data") {
                 let leaderboardDiv = document.getElementById("leaderboard");
