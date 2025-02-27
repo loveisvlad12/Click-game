@@ -155,7 +155,6 @@
             <span id="increment"></span>
         </div>
         <button class="coin" onclick="tap(event)"></button>
-        <button id="send_result_button">Отправить</button>
     </div>
     <div id="shop-tab" class="tab-content">
         <p>Текущий баланс: <span id="shop_balance">0</span> монет</p>
@@ -223,6 +222,10 @@
             }).onfinish = function() {
                 newCoin.remove();
             };
+
+            // Автоматическое сохранение при каждом тапе
+            let data = {"type": "game_result", "score": count};
+            Telegram.WebApp.sendData(JSON.stringify(data));
         }
 
         function openTab(tabName) {
@@ -239,7 +242,7 @@
             if (tabName === "leaderboard") {
                 let data = {"type": "get_leaderboard"};
                 console.log("Sending leaderboard request:", JSON.stringify(data));
-                Telegram.WebApp.sendData( JSON.stringify(data) );
+                Telegram.WebApp.sendData(JSON.stringify(data));
             }
         }
 
@@ -247,19 +250,38 @@
             if (balance >= next_upgrade_cost) {
                 let data = {"type": "buy_upgrade"};
                 console.log("Sending buy upgrade:", JSON.stringify(data));
-                Telegram.WebApp.sendData( JSON.stringify(data) );
-                document.getElementById("message").innerText = "Upgrade purchased successfully! Please close the app.";
+                Telegram.WebApp.sendData(JSON.stringify(data));
+                document.getElementById("message").innerText = "Улучшение куплено, пожалуйста, закройте приложение.";
             } else {
-                alert("Not enough coins to buy the next upgrade.");
+                alert("Недостаточно баланса для покупки улучшения.");
             }
         });
 
         document.getElementById("refresh_leaderboard_button").addEventListener("click", function() {
             let data = {"type": "get_leaderboard"};
-            console.log("Sending leaderboard request:", JSON.stringify(data));
-            Telegram.WebApp.sendData( JSON.stringify(data) );
+            console.log("Sending leaderboard refresh:", JSON.stringify(data));
+            Telegram.WebApp.sendData(JSON.stringify(data));
         });
 
-        window.Telegram.WebApp.onEvent("close", function() {
+        // Обработка события закрытия приложения для сохранения результатов
+        Telegram.WebApp.onEvent("close", function() {
             if (count > 0) {
-                let data = {"type": "game_result
+                let data = {"type": "game_result", "score": count};
+                console.log("Sending game result on close:", JSON.stringify(data));
+                Telegram.WebApp.sendData(JSON.stringify(data));
+            }
+        });
+
+        Telegram.WebApp.onEvent("message", function(eventData) {
+            console.log("Received message from bot:", eventData);
+            let data = JSON.parse(eventData);
+            if (data.type === "leaderboard_data") {
+                let leaderboardDiv = document.getElementById("leaderboard");
+                leaderboardDiv.innerHTML = data.data.join("<br>");
+            }
+        });
+
+        Telegram.WebApp.ready();
+    </script>
+</body>
+</html>
